@@ -13,10 +13,12 @@ module.exports = {
             }
         });
     },
-    /*
     // mongoose 在执行update是无法调用验证器
+    // http://stackoverflow.com/questions/15627967/why-mongoose-doesnt-validate-on-update
+    // https://www.mongodb.com/blog/post/introducing-version-40-mongoose-nodejs-odm
+    // 验证是否不验证数据类型
     edit: function(conditions, data, cb){
-        this.Model.update(conditions, {$set: data}, {runValidators: true}, function(err, res){
+        this.Model.update(conditions, data, {runValidators: true}, function(err, res){
             if(err){
                 cb(err);
             }else{
@@ -24,7 +26,7 @@ module.exports = {
             }
         })
     },
-    */
+    /*
     // 需要debuggr吧data放到res中
     edit: function(conditions, data, cb){
         this.findOne(conditions, function(err, res){
@@ -41,6 +43,7 @@ module.exports = {
             }
         })
     },
+    */
     findOne: function(conditions, cb){
         this.Model.findOne(conditions, function(err, res){
             if(err){

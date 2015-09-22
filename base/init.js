@@ -4,7 +4,7 @@ var users = require('./models/users');
 
 //inintUser();
 //searchUser();
-editUser();
+//editUser();
 
 function inintUser(){
     // test user
@@ -36,7 +36,7 @@ function searchUser(){
 }
 // 修改用户
 function editUser(){
-    users.edit({nick: 'tudou'}, {email: 123456111}, function(err){
+    users.edit({nick: 'tudou'}, {email: ''}, function(err){
         if(err){
             console.log('修改用户邮箱失败：' + err);
         }else{
