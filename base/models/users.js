@@ -6,7 +6,6 @@ var User;
 var UserSchema;
 var UserModel;
 module.exports = User = {};
-
 /**
 *   错误码：
 *   -1 未找到用户
@@ -25,48 +24,14 @@ UserModel = db.mongoose.model('User');
 // 将模型加入当前函数属性中
 User.Model = UserModel;
 // 继承基类的通用方法
-util.mixin(User, base)
-/**
-* 需要注意调用edit时，data只能传递修改的对象属性。 {email:'xxx@gmail.com'}
-* res { ok: 1, nModified: 1, n: 1 }
-*/
-/*
-User.add = function(data, cb){
-    var user = new UserModel(data);
-    user.save(function(err){
-        if(err){
-            cb(err);
-        }else{
-            cb(null);
-        }
-    });
-}
-
-User.edit = function(nick, data, cb){
-    UserModel.update({nick: nick}, data, function(err, res){
-        if(err){
-            cb(err);
-        }else{
-            cb(null, res['ok']);
-        }
-    })
-}
-User.remove = function(nick, cb){
-    UserModel.findOneAndRemove({nick: nick}, function(err){
-        if(err){
-            cb(err);
-        }else{
-            cb(null);
-        }
-    })
-}
-User.findByNick = function(nick, cb){
-    UserModel.findOne({nick: nick}, function(err, user){
-        if(err){
-            cb(err);
-        }else{
-            cb(null, user);
-        }
-    });
-}
-*/
+util.mixin(User, base);
+// 校验字段
+UserModel.schema.path('email').validate(function (value) {
+  return util.regexp.email.test(value);
+}, 'Email地址无效');
+UserModel.schema.path('nick').validate(function (value) {
+  return value.length < 4 ? false : true;
+}, '昵称不能小于4位');
+UserModel.schema.path('nick').validate(function (value) {
+  return value.length > 12 ? false : true;
+}, '昵称不能大于12位');

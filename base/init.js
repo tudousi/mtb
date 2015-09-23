@@ -1,6 +1,45 @@
 // init call
 var util = require('./util');
 var users = require('./models/users');
+var classes = require('./models/classes');
+var article = require('./models/article');
+
+
+function initArticle(){
+    var data = {
+        title: 'news',
+        alise: 'news alise',
+        classesId: ''
+    };
+}
+
+
+//initClasses();
+//editClasses();
+function initClasses(){
+    var data = {
+        name: 'news',
+        desc: 'Daily News'
+    }
+    classes.add(data, function(err){
+        if(err){
+            console.log('初始化分类失败：' + err);
+        }else{
+            console.log('初始化分类成功：' + data.name);
+        }
+    });
+}
+function editClasses(){
+    classes.edit({name: 'news2'}, {name: ''}, function(err){
+        if(err){
+            console.log(err.errors);
+            console.log('修改分类描述失败：' + err);
+        }else{
+            console.log('修改分类描述成功！');
+        }
+    });
+}
+
 
 //inintUser();
 //searchUser();
@@ -36,8 +75,9 @@ function searchUser(){
 }
 // 修改用户
 function editUser(){
-    users.edit({nick: 'tudou'}, {email: ''}, function(err){
+    users.edit({nick: 'tudou'}, {nick: '1234567890123'}, function(err){
         if(err){
+            console.log(err.errors);
             console.log('修改用户邮箱失败：' + err);
         }else{
             console.log('修改邮箱成功！');

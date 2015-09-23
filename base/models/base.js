@@ -26,24 +26,6 @@ module.exports = {
             }
         })
     },
-    /*
-    // 需要debuggr吧data放到res中
-    edit: function(conditions, data, cb){
-        this.findOne(conditions, function(err, res){
-            if(err){
-                cb(err);
-            }else{
-                debugger;
-                util.mixin(res, data);
-                res.save({runValidators: true}, function(err){
-                    if(err){
-                        console.log(err);
-                    }
-                });
-            }
-        })
-    },
-    */
     findOne: function(conditions, cb){
         this.Model.findOne(conditions, function(err, res){
             if(err){

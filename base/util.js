@@ -11,5 +11,8 @@ module.exports = {
         for(var key in src){
             dest[key] = src[key];
         }
+    },
+    regexp: {
+        email: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
     }
 }
