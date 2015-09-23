@@ -5,27 +5,48 @@ var classes = require('./models/classes');
 var article = require('./models/article');
 
 
-function initArticle(){
+getArticleAndClasses();
+function getArticleAndClasses(){
+    article.getArticleAndClasses({title: 'article'}, function(err, article){
+        if(err){
+            console.log(err);
+        }else{
+            console.log(article);
+        }
+    });
+}
+function initArticle(id){
     var data = {
-        title: 'news',
-        alise: 'news alise',
-        classesId: ''
+        title: 'article',
+        alise: 'article alise new',
+        classes: id,
+        author: 'tudou',
+        content: 'a something content article',
+        user: 'tudou'
     };
+    article.add(data, function(err){
+        if(err){
+            console.log(err);
+        }else{
+            console.log('初始化文章成功：' + data.title);
+        }
+    });
 }
 
 
-//initClasses();
+//initClasses(); // 初始化分类和文章
 //editClasses();
 function initClasses(){
     var data = {
-        name: 'news',
-        desc: 'Daily News'
+        name: 'classes',
+        desc: '分类描述'
     }
-    classes.add(data, function(err){
+    classes.add(data, function(err, doc){
         if(err){
             console.log('初始化分类失败：' + err);
         }else{
-            console.log('初始化分类成功：' + data.name);
+            console.log('初始化分类成功：' + doc.name);
+            initArticle(doc._id);
         }
     });
 }

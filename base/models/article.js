@@ -10,13 +10,14 @@ module.exports = Article = {};
 *
 */
 ArticleSchema = new db.Schema({
-    title:      {type: String},
+    title:      {type: String, required: '文章标题不能为空'},
     alise:      {type: String},
-    classesId:  {type: db.Schema.Types.ObjectId},
     time:       {type: Date, defaults: Date.now},
-    view:       {type: Number},
+    view:       {type: Number, defaults: 0},
     author:     {type: String},
-    content:    {type: String}
+    content:    {type: String},
+    classes:    {type: db.Schema.Types.ObjectId, ref: 'Classes'},
+    user:       {type: String, ref: 'User'}
 });
 // 创建用户模型
 db.mongoose.model('Article', ArticleSchema);
@@ -27,13 +28,29 @@ Article.Model = ArticleModel;
 // 继承基类的通用方法
 util.mixin(Article, base);
 // 校验字段
-
+/*
 ArticleModel.schema.path('name').validate(function (value) {
   return value.length < 2 ? false : true;
 }, '分类名称不能小于2位');
-ArticleModel.schema.path('name').validate(function (value) {
-  return value.length > 16 ? false : true;
-}, '分类名称不能大于16位');
-ArticleModel.schema.path('name').validate(function (value) {
-  return value == '' ? false : true;
-}, '请填写分类名称');
+*/
+
+// 根据文章条件查询到文章关联的分类
+Article.getArticleAndClasses = function(conditions, cb){
+    this.Model.findOne({}).populate('classes user').exec(function(err, res){
+        if(err){
+            cb(err);
+        }else{
+            cb(null, res);
+        }
+    });
+};
+
+
+
+
+
+
+
+
+
+//

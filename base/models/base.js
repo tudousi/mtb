@@ -5,11 +5,11 @@ var util = require('../util');
 module.exports = {
     add: function(data, cb){
         var model = new this.Model(data);
-        model.save(function(err){
+        model.save(function(err, doc){
             if(err){
                 cb(err);
             }else{
-                cb(null);
+                cb(null, doc);
             }
         });
     },
