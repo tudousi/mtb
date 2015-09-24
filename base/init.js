@@ -16,26 +16,31 @@ function getArticleAndClasses(){
     });
 }
 function initArticle(id){
-    var data = {
-        title: 'article',
-        alise: 'article alise new',
-        classes: id,
-        author: 'tudou',
-        content: 'a something content article',
-        user: 'tudou'
-    };
-    article.add(data, function(err){
+    users.findOne({nick:'tudou'}, function(err, doc){
         if(err){
             console.log(err);
-        }else{
-            console.log('初始化文章成功：' + data.title);
+            return;
         }
+        var data = {
+            title: 'article',
+            alise: 'article alise new',
+            classes: id,
+            author: 'tudou',
+            content: 'a something content article',
+            user: doc
+        };
+        article.add(data, function(err){
+            if(err){
+                console.log(err);
+            }else{
+                console.log('初始化文章成功：' + data.title);
+            }
+        });
     });
 }
 
-
+//inintUser();
 //initClasses(); // 初始化分类和文章
-//editClasses();
 function initClasses(){
     var data = {
         name: 'classes',
@@ -62,7 +67,7 @@ function editClasses(){
 }
 
 
-//inintUser();
+
 //searchUser();
 //editUser();
 

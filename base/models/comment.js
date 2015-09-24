@@ -2,31 +2,27 @@ var db = require('../db');
 var util = require('../util');
 var base = require('./base');
 
-var Article;
-var ArticleSchema;
-var ArticleModel;
-module.exports = Article = {};
+var Comment;
+var CommentSchema;
+var CommentModel;
+module.exports = Comment = {};
 /**
 *
 */
-ArticleSchema = new db.Schema({
-    title:      {type: String, required: '文章标题不能为空'},
-    alise:      {type: String},
-    time:       {type: Date, defaults: Date.now},
-    view:       {type: Number, defaults: 0},
-    author:     {type: String},
-    content:    {type: String},
-    classes:    {type: db.Schema.Types.ObjectId, ref: 'Classes'},
+CommentSchema = new db.Schema({
+    title:      {type: String, required: ''},
+    content:    {type: String, required: ''},
+    date:       {type: Date, defaults: Date.now},
     user:       {type: db.Schema.Types.ObjectId, ref: 'User'}
 });
 // 创建用户模型
-db.mongoose.model('Article', ArticleSchema);
+db.mongoose.model('Comment', CommentSchema);
 // 添加用户模型
-ArticleModel = db.mongoose.model('Article');
+CommentModel = db.mongoose.model('Comment');
 // 将模型加入当前函数属性中
-Article.Model = ArticleModel;
+Comment.Model = CommentModel;
 // 继承基类的通用方法
-util.mixin(Article, base);
+util.mixin(Comment, base);
 // 校验字段
 /*
 ArticleModel.schema.path('name').validate(function (value) {
@@ -35,6 +31,7 @@ ArticleModel.schema.path('name').validate(function (value) {
 */
 
 // 根据文章条件查询到文章关联的分类
+/*
 Article.getArticleAndClasses = function(conditions, cb){
     this.Model.findOne({}).populate('classes user').exec(function(err, res){
         if(err){
@@ -44,7 +41,7 @@ Article.getArticleAndClasses = function(conditions, cb){
         }
     });
 };
-
+*/
 
 
 

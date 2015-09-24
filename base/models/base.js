@@ -18,20 +18,20 @@ module.exports = {
     // https://www.mongodb.com/blog/post/introducing-version-40-mongoose-nodejs-odm
     // 验证是否不验证数据类型
     edit: function(conditions, data, cb){
-        this.Model.update(conditions, data, {runValidators: true}, function(err, res){
+        this.Model.update(conditions, data, {runValidators: true}, function(err, doc){
             if(err){
                 cb(err);
             }else{
-                cb(null, res['ok']);
+                cb(null, doc['ok']);
             }
         })
     },
     findOne: function(conditions, cb){
-        this.Model.findOne(conditions, function(err, res){
+        this.Model.findOne(conditions, function(err, doc){
             if(err){
                 cb(err);
             }else{
-                cb(null, res);
+                cb(null, doc);
             }
         });
     },
