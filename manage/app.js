@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var flash = require('flash');
 var db = require('./db');
 
 // https://github.com/kcbanner/connect-mongo
@@ -28,6 +29,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+
 // 使用mongoose重置连接
 app.use(session({
     secret: 'mtb-session-opopop',
@@ -36,9 +39,11 @@ app.use(session({
         ttl: 15 * 24 * 60 * 60 // = 15 days. Default
     })
 }));
+// flash
+app.use(flash());
 
-app.use('/', routes);
-app.use('/users', users);
+//app.use('/', routes);
+//app.use('/users', users);
 manage(app);
 
 // catch 404 and forward to error handler

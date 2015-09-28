@@ -5,7 +5,7 @@ var classes = require('./models/classes');
 var article = require('./models/article');
 
 
-getArticleAndClasses();
+//getArticleAndClasses();
 function getArticleAndClasses(){
     article.getArticleAndClasses({title: 'article'}, function(err, article){
         if(err){
@@ -70,7 +70,7 @@ function editClasses(){
 
 //searchUser();
 //editUser();
-
+inintUser();
 function inintUser(){
     // test user
     var user = {
