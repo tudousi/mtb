@@ -41,7 +41,16 @@ app.use(session({
 }));
 // flash
 app.use(flash());
-
+/*
+app.use(function(req, res, next){
+    console.log(req.session.flash);
+    app.locals.success_messages = req.session.flash['success_messages'];
+    app.locals.error_messages = req.session.flash['error_messages'];
+    req.flash('success_messages', '');
+    req.flash('error_messages', '');
+    next();
+});
+*/
 //app.use('/', routes);
 //app.use('/users', users);
 manage(app);
