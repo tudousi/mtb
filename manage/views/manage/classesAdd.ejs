@@ -102,29 +102,43 @@
         </section>
         <!-- Content -->
         <div id='content'>
-            <form class="" action="/manage/classes" method="post">
-                <p>
-                    <label for="">
-                        parent:
-                        <select name="parent">
-                            <option value=""></option>
-                        </select>
-                    </label>
-                </p>
-                <p>
-                    <label for="">
-                        名称：
-                        <input type="text" name="name">
-                    </label>
-                </p>
-                <p>
-                    <label for="">
-                        描述：
-                        <input type="text" name="desc">
-                    </label>
-                </p>
-                <button type="submit">提交</button>
-            </form>
+            <div class='panel panel-default'>
+                <div class='panel-heading'>
+                    <i class='icon-edit icon-large'></i>
+                    分类管理
+                  </div>
+                  <div class='panel-body'>
+                      <form action="/manage/classes" method="post">
+                        <fieldset>
+                          <legend>编辑要添加的分类</legend>
+                          <div class='form-group'>
+                            <label class='control-label'>上级分类</label>
+                            <select name="parent" class="form-control">
+                                <option value="">无上级分类</option>
+                            <% classes.forEach(function(doc){ %>
+                                <option value="<%= doc['_id'] %>"><%= doc['name'] %></option>
+                             <% }); %>
+                            </select>
+                          </div>
+
+                          <div class='form-group'>
+                            <label class='control-label'>分类名称</label>
+                            <input name="name" class='form-control' placeholder='请输入分类的名称' type='text'>
+                          </div>
+
+                          <div class='form-group'>
+                            <label class='control-label'>分类描述</label>
+                            <input name="desc" class='form-control' placeholder='请输入分类描述'>
+                          </div>
+
+                        </fieldset>
+                        <div class='form-actions'>
+                          <button class='btn btn-default' type='submit'>提交</button>
+                          <a class='btn' href='/manage/classes'>取消</a>
+                        </div>
+                      </form>
+                  </div>
+            </div>
             <!--
             <div class='panel panel-default'>
                 <div class='panel-heading'>

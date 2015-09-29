@@ -82,6 +82,69 @@ module.exports = function(app){
         });
     });
     app.get('/manage/classesAdd', function(req, res){
-        res.render('manage/classesAdd', {});
+        // 获取已有的分类
+        classes.Model.find({}).sort({parent: 'asc', }).exec(function(err, doc){
+            var docObject = {};
+            // 遍历返回数据
+            doc.forEach(function(item){
+                // 如果是顶级类直接加到数据中
+                // 有坑，默认的item是无法增加对象属性的，要重新创建对象
+                var item = {
+                    _id: item._id,
+                    parent: item.parent,
+                    name: item.name,
+                    desc: item.desc,
+                    children: {}
+                };
+                // 就是顶级分类直接添加到docObject中
+                if(!item['parent']){
+                    docObject[item['_id']] = item;
+                }else{
+                    // 遍历已有的数据找到父级分类
+                    var parentObj = getParent(docObject, item['parent']);
+                    // 将当前分类添加到找到的父分类中
+                    if(parentObj){
+                        parentObj['children'][item['_id']] = item;
+                    }
+                }
+            });
+            // 找到父级分类并返回父级
+            function getParent(obj, parentId){
+                for(var key in obj){
+                    var cObj = obj[key];
+                    // 如果在顶级就能找到就直接返回
+                    if(key == parentId){
+                        return cObj;
+                    }
+                    // 如果有子分类就继续找
+                    if(cObj['children']){
+                        getParent(cObj[key]['children'], parentId);
+                    }
+                }
+                return;
+            }
+            /**
+            { '560a8fae90b240c814e1c358':
+            { _id: 560a8fae90b240c814e1c358,
+             parent: null,
+             name: '新闻',
+             desc: 'news',
+             children: { '560aa4369aee0e1616d05134': [Object] } },
+            '560aa19e1d2b00d7153b6e50':
+            { _id: 560aa19e1d2b00d7153b6e50,
+             parent: null,
+             name: 'MTB',
+             desc: '山地自行车',
+             children: {} },
+            '560aa73ade4bb237165f334c':
+            { _id: 560aa73ade4bb237165f334c,
+             parent: null,
+             name: '配件',
+             desc: '最新热门配件',
+             children: {} } }
+            */
+            // 需要遍历对象构建html
+            res.render('manage/classesAdd', {classes: docObject});
+        });
     });
 }

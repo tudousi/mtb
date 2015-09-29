@@ -1,0 +1,24 @@
+{ '560a8fae90b240c814e1c358': 
+   { _id: 560a8fae90b240c814e1c358,
+     parent: null,
+     name: '新闻',
+     desc: 'news',
+     children: 
+      { '560aa4369aee0e1616d05134': 
+         { _id: 560aa4369aee0e1616d05134,
+           parent: 560a8fae90b240c814e1c358,
+           name: '比赛',
+           desc: '最新热门赛事',
+           children: {} } } },
+  '560aa19e1d2b00d7153b6e50': 
+   { _id: 560aa19e1d2b00d7153b6e50,
+     parent: null,
+     name: 'MTB',
+     desc: '山地自行车',
+     children: {} },
+  '560aa73ade4bb237165f334c': 
+   { _id: 560aa73ade4bb237165f334c,
+     parent: null,
+     name: '配件',
+     desc: '最新热门配件',
+     children: {} } }

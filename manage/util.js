@@ -18,7 +18,7 @@ module.exports = {
     // debugger
     debugger: function(name, data){
         if(typeof data == 'object'){
-            fs.writeFile('./debugger/' + name, util.inspect(data));
+            fs.writeFile('./debugger/' + name, util.inspect(data, {depth:null}));
         }else{
             fs.writeFile('./debugger/' + name, data);
         }
