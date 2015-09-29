@@ -10,7 +10,8 @@ module.exports = Classes = {};
 *
 */
 ClassesSchema = new db.Schema({
-    name:  {type: String, required: '分类名称不能为空'},
+    parent: {type: db.Schema.Types.ObjectId},
+    name:   {type: String, required: '分类名称不能为空'},
     desc:   {type: String}
 });
 // 创建用户模型

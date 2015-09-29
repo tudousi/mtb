@@ -5,6 +5,7 @@ manage routes
 
 var util = require('../util');
 var users = require('../models/users');
+var classes = require('../models/classes');
 var flash = require('flash');
 var regExp = {
 
@@ -48,5 +49,39 @@ module.exports = function(app){
                 return;
             }
         });
+    });
+    //
+    app.get('/manage/index', function(req, res){
+        res.render('manage/index', {});
+    });
+
+    app.get('/manage/classes', function(req, res){
+        classes.Model.find({}, function(err, doc){
+            if(err){
+                console.log(err);
+            }
+            console.log(doc);
+        });
+        res.render('manage/classes', {});
+    });
+    // add classes
+    app.post('/manage/classes', function(req, res){
+        var parent = req.body['parent'] || null;
+        var name = req.body['name'];
+        var desc = req.body['desc'];
+        classes.add({
+            parent: parent,
+            name: name,
+            desc: desc
+        }, function(err, doc){
+            if(err){
+                console.log('add classes error: ', err);
+                return;
+            }
+            console.log(doc);
+        });
+    });
+    app.get('/manage/classesAdd', function(req, res){
+        res.render('manage/classesAdd', {});
     });
 }
