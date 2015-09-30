@@ -12,7 +12,9 @@ var regExp = {
 };
 var flashInfo = {
     notUser: '账号或密码错误！',
-    unknown: '未知错误，请联系管理员'
+    unknown: '未知错误，请联系管理员',
+    error: '操作失败',
+    success: '操作成功'
 }
 
 module.exports = function(app){
@@ -75,10 +77,12 @@ module.exports = function(app){
             desc: desc
         }, function(err, doc){
             if(err){
-                console.log('add classes error: ', err);
+                req.flash('error_messages', flashInfo['error']);
+                res.redirect('/manage/classes');
                 return;
             }
-            console.log(doc);
+            req.flash('success_messages', flashInfo['success']);
+            res.redirect('/manage/classes');
         });
     });
     app.get('/manage/classesAdd', function(req, res){
@@ -94,7 +98,7 @@ module.exports = function(app){
                     parent: item.parent,
                     name: item.name,
                     desc: item.desc,
-                    children: {}
+                    children: ''
                 };
                 // 就是顶级分类直接添加到docObject中
                 if(!item['parent']){
@@ -104,10 +108,30 @@ module.exports = function(app){
                     var parentObj = getParent(docObject, item['parent']);
                     // 将当前分类添加到找到的父分类中
                     if(parentObj){
+                        parentObj['children'] = {};
                         parentObj['children'][item['_id']] = item;
                     }
                 }
             });
+            // 遍历字符串树
+            // [{name:'',_id:''}]
+            var treeStr = [];
+            function getTree(obj, str){
+                var tmpObj = null;
+                if(!str) str = '|-';
+                for(var key in obj){
+                    tmpObj = obj[key];
+                    //console.log(tmpObj);
+                    if(tmpObj['parent']){
+                        str += '|-';
+                    }
+                    treeStr.push({name: str + tmpObj['name'], _id: tmpObj['_id']});
+                    if(tmpObj['children']){
+                        getTree(tmpObj['children'], str);
+                    }
+                }
+            }
+            getTree(docObject);
             // 找到父级分类并返回父级
             function getParent(obj, parentId){
                 for(var key in obj){
@@ -123,28 +147,9 @@ module.exports = function(app){
                 }
                 return;
             }
-            /**
-            { '560a8fae90b240c814e1c358':
-            { _id: 560a8fae90b240c814e1c358,
-             parent: null,
-             name: '新闻',
-             desc: 'news',
-             children: { '560aa4369aee0e1616d05134': [Object] } },
-            '560aa19e1d2b00d7153b6e50':
-            { _id: 560aa19e1d2b00d7153b6e50,
-             parent: null,
-             name: 'MTB',
-             desc: '山地自行车',
-             children: {} },
-            '560aa73ade4bb237165f334c':
-            { _id: 560aa73ade4bb237165f334c,
-             parent: null,
-             name: '配件',
-             desc: '最新热门配件',
-             children: {} } }
-            */
             // 需要遍历对象构建html
-            res.render('manage/classesAdd', {classes: docObject});
+            //console.log(treeStr);
+            res.render('manage/classesAdd', {classes: treeStr});
         });
     });
 }
